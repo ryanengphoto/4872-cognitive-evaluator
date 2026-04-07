@@ -16,3 +16,13 @@ Please submit two .docx documents: i) python code with comments, and ii) require
 | `main.py` | The main driver file. |
 | `gui.py` | The file holding the gui class and configuration. |
 | `decision_tree.py` | The file with the computing logic for the decision tree structure. |
+
+
+# ⚠️ Important: Keep Your Repository Up to Date
+
+To make sure you always have the latest version of this project, run the following commands:
+
+##  If you already cloned the repo
+```bash
+git checkout main
+git pull
