@@ -12,7 +12,7 @@ class GUI:
         self.root.configure(bg="#f0f4f8")
         self.root.resizable(False, False)
 
-        # --- Game state ---
+        # game state
         self.current_question_id = "1"
         self.score = 0
         self.questions_answered = 0
@@ -25,20 +25,17 @@ class GUI:
         self._build_layout()
         self._load_question()
 
-    # ------------------------------------------------------------------
-    # Styling
-    # ------------------------------------------------------------------
-
+    # styling
     def _build_styles(self):
         style = ttk.Style(self.root)
         style.theme_use("clam")
 
-        # Frame
+        # frame
         style.configure("Card.TFrame", background="#ffffff",
                          relief="flat", borderwidth=0)
         style.configure("BG.TFrame", background="#f0f4f8")
 
-        # Labels
+        # labels
         style.configure("Header.TLabel",
                          background="#1a2a4a", foreground="#ffffff",
                          font=("Georgia", 18, "bold"), anchor="center")
@@ -65,7 +62,7 @@ class GUI:
                          background="#f0f4f8", foreground="#4b5563",
                          font=("Helvetica", 13), anchor="center")
 
-        # Buttons
+        # buttons
         style.configure("Submit.TButton",
                          background="#2563eb", foreground="#ffffff",
                          font=("Helvetica", 12, "bold"),
@@ -87,12 +84,9 @@ class GUI:
         style.map("Restart.TButton",
                   background=[("active", "#047857")])
 
-    # ------------------------------------------------------------------
-    # Layout construction
-    # ------------------------------------------------------------------
-
+    # layout
     def _build_layout(self):
-        # ---- Header bar ----
+        # header
         self.header_frame = tk.Frame(self.root, bg="#1a2a4a", height=80)
         self.header_frame.pack(fill="x")
         self.header_frame.pack_propagate(False)
@@ -104,11 +98,11 @@ class GUI:
                  bg="#1a2a4a", fg="#a8c4e0",
                  font=("Helvetica", 9)).pack()
 
-        # ---- Main content area ----
+        # main content
         self.content_frame = tk.Frame(self.root, bg="#f0f4f8")
         self.content_frame.pack(fill="both", expand=True, padx=40, pady=20)
 
-        # Score bar
+        # score bar
         score_bar = tk.Frame(self.content_frame, bg="#f0f4f8")
         score_bar.pack(fill="x", pady=(0, 12))
 
@@ -122,7 +116,7 @@ class GUI:
                                         font=("Helvetica", 11))
         self.progress_label.pack(side="right")
 
-        # Progress bar
+        # progress bar
         self.progress_var = tk.DoubleVar(value=0)
         self.progress_bar = ttk.Progressbar(self.content_frame,
                                              variable=self.progress_var,
@@ -130,7 +124,7 @@ class GUI:
                                              length=720, mode="determinate")
         self.progress_bar.pack(fill="x", pady=(0, 16))
 
-        # Question card
+        # question card
         self.card = tk.Frame(self.content_frame, bg="#ffffff",
                               relief="flat", bd=0,
                               highlightthickness=1,
@@ -140,7 +134,7 @@ class GUI:
         card_inner = tk.Frame(self.card, bg="#ffffff")
         card_inner.pack(fill="both", padx=24, pady=20)
 
-        # Question metadata row
+        # question metadata
         meta_row = tk.Frame(card_inner, bg="#ffffff")
         meta_row.pack(fill="x", pady=(0, 10))
 
@@ -155,10 +149,9 @@ class GUI:
                                           font=("Helvetica", 10, "italic"))
         self.difficulty_label.pack(side="right")
 
-        # Divider
         tk.Frame(card_inner, bg="#e5e7eb", height=1).pack(fill="x", pady=(0, 14))
 
-        # Question text
+        # question text
         self.question_label = tk.Label(card_inner, text="",
                                         bg="#ffffff", fg="#1a2a4a",
                                         font=("Georgia", 14),
@@ -166,7 +159,7 @@ class GUI:
                                         anchor="w")
         self.question_label.pack(fill="x", pady=(0, 20))
 
-        # Answer entry
+        # answer
         entry_frame = tk.Frame(card_inner, bg="#ffffff")
         entry_frame.pack(fill="x", pady=(0, 6))
 
@@ -184,14 +177,13 @@ class GUI:
         self.answer_entry.pack(fill="x", ipady=8)
         self.answer_entry.bind("<Return>", lambda e: self._submit())
 
-        # Feedback label (hidden until answer submitted)
+        # feedback label
         self.feedback_label = tk.Label(card_inner, text="",
                                         bg="#ffffff",
                                         font=("Helvetica", 11, "bold"),
                                         anchor="w")
         self.feedback_label.pack(fill="x", pady=(8, 0))
 
-        # ---- Bottom button row ----
         btn_row = tk.Frame(self.content_frame, bg="#f0f4f8")
         btn_row.pack(fill="x", pady=(16, 0))
 
@@ -203,10 +195,7 @@ class GUI:
                                       command=self._submit)
         self.submit_btn.pack(side="right")
 
-    # ------------------------------------------------------------------
-    # Game logic
-    # ------------------------------------------------------------------
-
+    # game logic
     def _load_question(self):
         """Populate all widgets with the current question data."""
         questions = self.questions_dict
@@ -263,7 +252,7 @@ class GUI:
         self.questions_answered += 1
         self.progress_var.set(self.questions_answered)
 
-        # Pause briefly then advance
+        # short delay
         self.root.after(1400, self._load_question)
 
     def _show_results(self):
@@ -271,14 +260,14 @@ class GUI:
         self.progress_bar.pack_forget()
         self.card.pack_forget()
 
-        # Clear content frame
+        # clear frame
         for widget in self.content_frame.winfo_children():
             widget.destroy()
 
         pct = int((self.score / self.max_questions) * 100)
         grade, colour, fill = self._grade(pct)
 
-        # Results card
+        # results
         res_card = tk.Frame(self.content_frame, bg="#ffffff",
                              highlightthickness=1,
                              highlightbackground="#e5e7eb")
@@ -295,7 +284,7 @@ class GUI:
                  bg="#ffffff", fg="#6b7280",
                  font=("Helvetica", 13)).pack(pady=(0, 20))
 
-        # Big score circle (drawn on a Canvas)
+        # score circle
         canvas = tk.Canvas(inner, width=130, height=130,
                             bg="#ffffff", highlightthickness=0)
         canvas.pack(pady=(0, 16))
@@ -310,7 +299,6 @@ class GUI:
                  bg="#ffffff", fg=colour,
                  font=("Georgia", 16, "bold")).pack(pady=(0, 24))
 
-        # Button row
         btn_row = tk.Frame(inner, bg="#ffffff")
         btn_row.pack()
 
@@ -325,7 +313,7 @@ class GUI:
         if pct == 100:
             return "Perfect Score — Outstanding!", "#059669", "#d1fae5"
         elif pct >= 80:
-            return "Excellent cognitive performance", "#2563eb", "#dbeafe"
+            return "Excellent performance", "#2563eb", "#dbeafe"
         elif pct >= 60:
             return "Good — keep practising!", "#d97706", "#fef3c7"
         elif pct >= 40:
@@ -349,10 +337,6 @@ class GUI:
     def _confirm_quit(self):
         if messagebox.askyesno("Quit", "Are you sure you want to quit?"):
             self.root.destroy()
-
-    # ------------------------------------------------------------------
-    # Entry point
-    # ------------------------------------------------------------------
 
     def run(self):
         self.root.mainloop()
