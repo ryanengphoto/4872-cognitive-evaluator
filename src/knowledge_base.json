@@ -1,0 +1,45 @@
+{
+
+    "questions": [
+        {
+            "id": "1",
+            "question": "What is the capital of France?",
+            "answer": "Paris",
+            "difficulty": "easy",
+            "correct_next": "2",
+            "incorrect_next": "4"
+        },
+        {
+            "id": "2",
+            "question": "What is the capital of Germany?",
+            "answer": "Berlin",
+            "difficulty": "medium",
+            "correct_next": "3",
+            "incorrect_next": "5"
+        },
+        {
+            "id": "3",
+            "question": "What is the capital of Italy?",
+            "answer": "Rome",
+            "difficulty": "hard",
+            "correct_next": null,
+            "incorrect_next": null
+        },
+        {
+            "id": "4",
+            "question": "What is the capital of Spain?",
+            "answer": "Madrid",
+            "difficulty": "easy",
+            "correct_next": "2",
+            "incorrect_next": "5"
+        },
+        {
+            "id": "5",
+            "question": "What is the capital of Portugal?",
+            "answer": "Lisbon",
+            "difficulty": "easy",
+            "correct_next": null,
+            "incorrect_next": null
+        }     
+    ]
+}
