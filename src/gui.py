@@ -17,7 +17,7 @@ class GUI:
         self.current_question_id = "1"
         self.score = 0
         self.questions_answered = 0
-        self.max_questions = 10
+        self.max_questions = self.decision_tree.max_questions
 
         # decision_tree.questions is already a dict keyed by id
         self.questions_dict = self.decision_tree.questions
@@ -280,11 +280,25 @@ class GUI:
         tk.Label(inner, text="Quiz Complete!",
                  bg="#ffffff", fg="#1a2a4a",
                  font=("Georgia", 22, "bold")).pack(pady=(0, 6))
-
+        '''
         tk.Label(inner, text=f"{self.score} / {self.max_questions} correct",
                  bg="#ffffff", fg="#6b7280",
                  font=("Helvetica", 13)).pack(pady=(0, 20))
-
+        '''
+        # changed scoring system to point based instead of question based, so we can delete the above
+        score = self.decision_tree.get_score()
+        if score > 1:
+            tk.Label(inner, text=f"{score} points earned",
+                    bg="#ffffff", fg="#6b7280",
+                    font=("Helvetica", 13)).pack(pady=(0, 20))
+        else:
+            tk.Label(inner, text=f"{score} point earned",
+                    bg="#ffffff", fg="#6b7280",
+                    font=("Helvetica", 13)).pack(pady=(0, 20))
+        
+        tk.Label(inner, text=f"{self.decision_tree.get_result()}",
+                    bg="#ffffff", fg="#6b7280",
+                    font=("Helvetica", 13)).pack(pady=(0, 20)) 
         # score circle
         canvas = tk.Canvas(inner, width=130, height=130,
                             bg="#ffffff", highlightthickness=0)
