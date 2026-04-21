@@ -184,6 +184,11 @@ class DecisionTree:
             return "Average cognitive ability"
         return "High cognitive ability"
 
+    def reset(self):
+        """Restore the full question set and score after questions were popped during play."""
+        self.questions = {q["id"]: q for q in self.knowledge_base["questions"]}
+        self.score = 0
+
 
 class GUI:
     def __init__(self, root, tree):
@@ -195,7 +200,6 @@ class GUI:
         self.root.resizable(False, False)
 
         self.current_question_id = "1"
-        self.score = 0
         self.questions_answered = 0
         self.max_questions = self.decision_tree.max_questions
         self.questions_dict = self.decision_tree.questions
@@ -298,18 +302,17 @@ class GUI:
         q = self.questions_dict[self.current_question_id]
         correct = raw.lower() == q["answer"].lower()
         if correct:
-            self.score += 1
             self.feedback_label.config(text=f"Correct! The answer is {q['answer']}.", fg="#059669")
         else:
             self.feedback_label.config(
                 text=f"Incorrect. The correct answer is {q['answer']}.", fg="#dc2626"
             )
 
-        self.score_label.config(text=f"Score: {self.score}")
         self.answer_entry.config(state="disabled")
         self.submit_btn.config(state="disabled")
         self.current_question_id = self.decision_tree.get_next_question(self.current_question_id, raw)
         self.questions_answered += 1
+        self.score_label.config(text=f"Score: {self.decision_tree.get_score()}")
         self.root.after(1000, self._load_question)
 
     def _show_results(self):
@@ -338,13 +341,11 @@ class GUI:
         ).pack(pady=6)
 
     def _restart(self):
+        self.decision_tree.reset()
         self.current_question_id = "1"
-        self.score = 0
         self.questions_answered = 0
         self.questions_dict = self.decision_tree.questions
-        self.decision_tree.score = 0
-        for widget in self.content_frame.winfo_children():
-            widget.destroy()
+        self.content_frame.destroy()
         self._build_layout()
         self._load_question()
 
